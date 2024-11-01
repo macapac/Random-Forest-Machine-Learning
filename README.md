@@ -24,12 +24,6 @@ g. scripts: Biome.py.ipynb for plotting the biome map using "the legend of biome
 For your self-learning to be familiar with machine learning, you can first look at the script BERN01Demo.ipynb. 
 
 
-Path for loading the CSV dataset:
-data = pd.read_csv(r'C:\Users\asus\Desktop\Project_datasets\data_index_2.csv')
-
-Path for loading the world map:
-world = gpd.read_file(r'C:/Users/asus/Desktop/110m_cultural')
-
 # BERN01_random_forest
 data information:
 1. There are five climate variables which are daily average values during 1961-1990. They are Tswrf (Total shortwave radiation flux, W m-2), Pre (Precipitation, mm day-1), Tmp (Daily mean temperature, K), 
@@ -49,4 +43,10 @@ Biome_obs: The observed biome type (category)
 
 3. legend of biome
 
-4. soilmap_center_interpolated.dat: the texture inforamtion for each grid cell (Percentage). 
+4. soilmap_center_interpolated.dat: the texture inforamtion for each grid cell (Percentage).
+
+Path for loading the CSV dataset:
+data = pd.read_csv(r'C:\Users\asus\Desktop\Project_datasets\data_index_2.csv')
+
+Path for loading the world map:
+world = gpd.read_file(r'C:/Users/asus/Desktop/110m_cultural')
