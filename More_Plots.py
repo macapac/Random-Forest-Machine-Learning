@@ -3,6 +3,7 @@ import numpy as np
 import geopandas as gpd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import fiona
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.preprocessing import StandardScaler
@@ -236,38 +237,45 @@ misclassified_points = X_test.iloc[misclassified_indices].copy()
 misclassified_points['Actual'] = y_test.iloc[misclassified_indices].values
 misclassified_points['Predicted'] = y_pred_best_random[misclassified_indices]
 
-# Load a GeoDataFrame of country boundaries
-world = gpd.read_file(r'Project_datasets/ne_110m_admin_0_countries.zip')
+try:
+    # Load the world map
+    world = gpd.read_file(r'C:\Users\asus\Desktop\Lund\Computational Modelling\Machine Learning Forest\110m_cultural')
+    
+    # Create a figure and axis for plotting
+    fig, ax = plt.subplots(1, 1, figsize=(10, 8))
 
-# Create a figure and axis for plotting
-fig, ax = plt.subplots(1, 1, figsize=(10, 8))
+    # Plot country boundaries
+    world.boundary.plot(ax=ax, edgecolor='black', linewidth=0.8)
 
-# Plot country boundaries
-world.boundary.plot(ax=ax, edgecolor='black', linewidth=0.8)
+    # Plot misclassified points, color-coded by their actual class
+    misclassified_gdf = gpd.GeoDataFrame(
+        misclassified_points,
+        geometry=gpd.points_from_xy(misclassified_points['Lon'], misclassified_points['Lat']),
+        crs='EPSG:4326'
+    )
 
-# Plot misclassified points, color-coded by their actual class
-misclassified_gdf = gpd.GeoDataFrame(
-    misclassified_points,
-    geometry=gpd.points_from_xy(misclassified_points['Lon'], misclassified_points['Lat']),
-    crs='EPSG:4326'
-)
+    # Plot misclassified points on the same axis
+    misclassified_gdf.plot(ax=ax, column='Actual', cmap='viridis', markersize=10)
 
-# Plot misclassified points on the same axis, using the 'Actual' column to color-code
-misclassified_gdf.plot(ax=ax, column='Actual', cmap='viridis', markersize=10)
+    # Set plot title and labels
+    ax.set_title('Misclassified Points from Best Random Forest Model')
+    ax.set_xlabel('Longitude')
+    ax.set_ylabel('Latitude')
+    ax.set_xlim([-85, -30])  # Longitude range for the Americas
+    ax.set_ylim([-60, 15])   # Latitude range for the Americas
 
-# Set plot title and labels
-ax.set_title('Misclassified Points from Best Random Forest Model, Yellow: Tropical rain forest, Purple: Tropical seasonal forest')
-ax.set_xlabel('Longitude')
-ax.set_ylabel('Latitude')
+    plt.tight_layout()
+    plt.show()
 
-# Set the x and y axis limits to focus on the Americas
-ax.set_xlim([-85, -30])  # Longitude
-ax.set_ylim([-60, 15])    # Latitude
-
-# Set tight layout and show the plot
-plt.tight_layout()
-plt.show()
+except fiona.errors.DriverError as e:
+    print("Error loading boundary file:", e)
+    print("Please verify the path or download the required geographic data.")
 
 # Save the cleaned dataset for future use
+import os
+
+# Create the 'out' directory if it does not exist
+os.makedirs('out', exist_ok=True)
+
 data_cleaned.to_csv(r'out/data_cleaned.csv', index=False)
 print("\nData cleaning and model training complete!")

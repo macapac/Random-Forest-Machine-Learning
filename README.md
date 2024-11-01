@@ -49,4 +49,4 @@ Path for loading the CSV dataset:
 data = pd.read_csv(r'C:\Users\asus\Desktop\Project_datasets\data_index_2.csv')
 
 Path for loading the world map:
-world = gpd.read_file(r'C:/Users/asus/Desktop/110m_cultural')
+world = gpd.read_file(r'C:\Users\asus\Desktop\Lund\Computational Modelling\Machine Learning Forest\110m_cultural')
