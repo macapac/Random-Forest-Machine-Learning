@@ -24,10 +24,10 @@ g. scripts: Biome.py.ipynb for plotting the biome map using "the legend of biome
 For your self-learning to be familiar with machine learning, you can first look at the script BERN01Demo.ipynb. 
 
 
-# Path for loading the CSV dataset
+Path for loading the CSV dataset:
 data = pd.read_csv(r'C:\Users\asus\Desktop\Project_datasets\data_index_2.csv')
 
-# Path for loading the world map
+Path for loading the world map:
 world = gpd.read_file(r'C:/Users/asus/Desktop/110m_cultural')
 
 # BERN01_random_forest
